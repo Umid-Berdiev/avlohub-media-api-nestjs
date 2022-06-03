@@ -59,10 +59,15 @@ export class UsersService {
   }
 
   async buyTariff(user_id: string, tariff_id: string) {
-    const tariff = await this.tariffService.findOne(tariff_id);
-    const user = await this.userModel.findById(user_id);
-    user.update({ balance: user.balance - tariff.price }).exec();
+    try {
+      const tariff = await this.tariffService.findOne(tariff_id);
+      const user = await this.userModel.findById(user_id);
+      const newBalance = user.balance - tariff.price;
+      user.update({ balance: newBalance, tariff: tariff.id }).exec();
 
-    return 'success';
+      return 'success';
+    } catch (error) {
+      return error.message;
+    }
   }
 }

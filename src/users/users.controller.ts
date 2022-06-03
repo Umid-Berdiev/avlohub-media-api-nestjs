@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -17,16 +18,6 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  // @Post()
-  // async create(@Body() createUserDto: CreateUserDto) {
-  //   this.usersService.create(createUserDto);
-  // }
-
-  // @Get()
-  // async findAll(): Promise<UserDetailsInterface[]> {
-  //   return this.usersService.findAll();
-  // }
-
   @UseGuards(JwtGuard)
   @Get(':id')
   getUser(@Param('id') id: string): Promise<UserDetailsInterface> {
@@ -36,5 +27,11 @@ export class UsersController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('tariff')
+  buyTariff(@Request() req, @Body('tariff_id') tariff_id: string) {
+    return this.usersService.buyTariff(req.user.id, tariff_id);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
+import { TariffsService } from 'src/tariffs/tariffs.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDetailsInterface } from './interfaces/user-details.interface';
 
@@ -9,6 +10,7 @@ import { UserDetailsInterface } from './interfaces/user-details.interface';
 export class UsersService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserDocument>,
+    private tariffService: TariffsService,
   ) {}
 
   _getUserDetails(user: UserDocument): UserDetailsInterface {
@@ -54,5 +56,13 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
+  }
+
+  async buyTariff(user_id: string, tariff_id: string) {
+    const tariff = await this.tariffService.findOne(tariff_id);
+    const user = await this.userModel.findById(user_id);
+    user.update({ balance: user.balance - tariff.price }).exec();
+
+    return 'success';
   }
 }

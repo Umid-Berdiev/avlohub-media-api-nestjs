@@ -63,7 +63,9 @@ export class UsersService {
       const tariff = await this.tariffService.findOne(tariff_id);
       const user = await this.userModel.findById(user_id);
       const newBalance = user.balance - tariff.price;
-      user.update({ balance: newBalance, tariff: tariff.id }).exec();
+      user.balance = newBalance;
+      user.tariff = tariff.id;
+      user.save();
 
       return 'success';
     } catch (error) {

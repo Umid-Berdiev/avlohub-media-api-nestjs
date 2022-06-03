@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
-import crypto from 'crypto';
+// import crypto from 'crypto';
+const crypto = require('crypto');
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ExistingUserDto } from 'src/users/dto/existing-user.dto';
 import { UserDetailsInterface } from 'src/users/interfaces/user-details.interface';
@@ -22,6 +23,7 @@ export class AuthService {
     user: Readonly<CreateUserDto>,
   ): Promise<UserDetailsInterface | any> {
     const { username, email, password } = user;
+    // const uuid = 'skasdsakdaswevc09834jfsn';
     const uuid = crypto.randomUUID();
     const existingUser = await this.userService.findByEmail(email);
 

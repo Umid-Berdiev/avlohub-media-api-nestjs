@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
+import { Tariff } from './tariff.schema';
 
 export type UserDocument = User & Document;
 
@@ -19,6 +20,9 @@ export class User {
 
   @Prop({ default: 0 })
   balance: number;
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'Tariff' })
+  tariff: Tariff;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

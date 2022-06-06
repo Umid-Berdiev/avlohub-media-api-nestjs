@@ -3,10 +3,17 @@ import { Document } from 'mongoose';
 
 export type RoleDocument = Role & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Role {
   @Prop({ required: true })
-  name: string;
+  name: () => {
+    uz: string;
+    ru: string;
+    en: string;
+  };
+
+  @Prop({ required: true, unique: true })
+  slug: string;
 }
 
 export const RoleSchema = SchemaFactory.createForClass(Role);

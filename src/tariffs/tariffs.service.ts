@@ -43,6 +43,6 @@ export class TariffsService {
 
   async remove(id: string) {
     await this.tariffModel.findByIdAndRemove(id).exec();
-    return `Language with id ${id} successfully removed`;
+    return `Tariff obj with id ${id} successfully removed`;
   }
 }

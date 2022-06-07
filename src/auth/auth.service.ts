@@ -1,8 +1,7 @@
+const crypto = require('crypto');
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
-// import crypto from 'crypto';
-const crypto = require('crypto');
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ExistingUserDto } from 'src/users/dto/existing-user.dto';
 import { UserDetailsInterface } from 'src/users/interfaces/user-details.interface';

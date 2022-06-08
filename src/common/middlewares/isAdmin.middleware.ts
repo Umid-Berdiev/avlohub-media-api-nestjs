@@ -5,10 +5,12 @@ import { Request, Response, NextFunction } from 'express';
 export class IsAdminMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     console.log('isAdmin middleware is running...');
-    const user = User.findById(req.user.id);
-    if (req.user.roles.includes('Admin')) {
-      next();
-    }
-    res.sendStatus(401);
+    next();
+
+    // const user = User.findById(req.user.id);
+    // if (req.user?.roles?.includes('Admin')) {
+    //   next();
+    // }
+    // res.sendStatus(401);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { RolesService } from 'src/roles/roles.service';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { TariffsService } from 'src/tariffs/tariffs.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,6 +12,7 @@ export class UsersService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserDocument>,
     private tariffService: TariffsService,
+    private roleService: RolesService,
   ) {}
 
   _getUserDetails(user: UserDocument): UserDetailsInterface {
@@ -18,6 +20,7 @@ export class UsersService {
       id: user.id,
       username: user.username,
       email: user.email,
+      roles: user.roles,
       uuid: user.uuid,
     };
   }
@@ -52,6 +55,23 @@ export class UsersService {
       .exec();
 
     return updatedUser;
+  }
+
+  async updateRole(id: string, role_id: string): Promise<any> {
+    try {
+      const user = await this.userModel.findById(id).exec();
+      const role = await this.roleService.findOne(role_id);
+
+      if (user.roles.some((item) => item === role)) {
+        return 'This role was already attached to this user!';
+      }
+
+      user.roles = [...user.roles, role];
+      user.save();
+      return 'success';
+    } catch (error) {
+      return error.message;
+    }
   }
 
   async findAll(): Promise<User[]> {

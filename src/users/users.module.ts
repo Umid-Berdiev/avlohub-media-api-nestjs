@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule, Prop } from '@nestjs/mongoose';
-import { Schema } from 'mongoose';
-import { Image } from 'src/schemas/image.schema';
-import { Role } from 'src/schemas/role.schema';
+import { RolesModule } from 'src/roles/roles.module';
 import { UserSchema } from 'src/schemas/user.schema';
 import { TariffsModule } from 'src/tariffs/tariffs.module';
 import { UsersController } from './users.controller';
@@ -14,15 +12,8 @@ import { UsersService } from './users.service';
   imports: [
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     TariffsModule,
+    RolesModule,
   ],
   exports: [UsersService],
 })
-export class UsersModule {
-  // one to many
-  @Prop({ type: Schema.Types.ObjectId, ref: 'Image' })
-  avatar: [Image];
-
-  // many to many
-  @Prop({ type: [{ type: Schema.Types.ObjectId, ref: 'Role' }] })
-  roles: Role[];
-}
+export class UsersModule {}

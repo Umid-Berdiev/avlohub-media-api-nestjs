@@ -13,4 +13,3 @@ import { CategorySchema } from 'src/schemas/category.schema';
   exports: [CategoriesService],
 })
 export class CategoriesModule {}
-// zulfiqor nomeri 933710988
